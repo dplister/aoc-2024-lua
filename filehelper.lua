@@ -10,5 +10,13 @@ function filehelper.read_lines(filename)
 	f:close()
 	return data
 end
+
+function filehelper.read_all(filename)
+    local f = io.open(filename, "rb")
+    assert(f)
+    local data = f:read("*all")
+    f:close()
+    return data
+end
 	
 return filehelper
