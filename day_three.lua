@@ -31,16 +31,21 @@ end
 function part_b(line)
     local pats = matching.multi_pattern(line, { "(don't%(%))", "(do%(%))", "(mul%(%d+,%d+%))" })
     local flip = true
+    local total = 0
     for _, v in ipairs(pats) do
         if v.capture == "do()" then
             flip = true
         elseif v.capture == "don't()" then
             flip = false
         else 
-            
+            if flip then
+                local nums = collect_nums(v.capture)
+                total = total + (nums[1] * nums[2])
+            end
         end
     end
+    return total
 end
 
 -- print(part_a(filehelper.read_all(arg[1])))
-part_b(filehelper.read_all(arg[1]))
+print(part_b(filehelper.read_all(arg[1])))
