@@ -44,4 +44,14 @@ function test_string_list()
     end
 end
 
+function test_array_index_found()
+    luaunit.assertEquals(list.array_index({ 4, 5, 6 }, 5), 2)
+    luaunit.assertEquals(list.array_index({ 4, 5, 6 }, 4), 1)
+end
+
+function test_array_index_not_found()
+    luaunit.assertEquals(list.array_index({ }, 2), -1)
+    luaunit.assertEquals(list.array_index({ 1, 3 }, 2), -1)
+end
+
 os.exit(luaunit.LuaUnit.run())

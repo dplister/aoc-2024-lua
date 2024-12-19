@@ -36,4 +36,16 @@ function list.string_list(str)
     return ls
 end
 
+--[[
+    Returns index of first target match in array
+]]--
+function list.array_index(arr, target)
+    for i, v in ipairs(arr) do
+        if target == v then
+            return i
+        end
+    end
+    return -1
+end
+
 return list
