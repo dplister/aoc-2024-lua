@@ -46,13 +46,30 @@ end
 --[[
     Returns the set of cells, starting at px, py and continuing in a 
     step px, py until n cells are collected.
-    Will return fewer cells if the projection would be beyond the boundary of the grid.
+    If n is omitted, projection continues until boundary.
+    If n is supplied, will return fewer cells if the projection would be beyond the boundary of the grid.
 ]]--
 function grid.project(g, px, py, stepx, stepy, n)
     local result = {}
     while grid.in_bounds(g, px, py)
-        and #result < n do
+        and (n == nil or #result < n) do
         result[#result + 1] = g[py][px]
+        px = px + stepx
+        py = py + stepy
+    end
+    return result
+end
+
+--[[
+    Returns the set of cells, starting at px, py and continuing in a 
+    step px, py until terminate returns true
+    If terminate is not supplied, step will continue until bouundary.
+]]--
+function grid.path(g, px, py, stepx, stepy, terminate)
+    local result = {}
+    while grid.in_bounds(g, px, py)
+        and (n == nil or #result < n) do
+        result[#result + 1] = { x=px, y=py }
         px = px + stepx
         py = py + stepy
     end
@@ -81,6 +98,22 @@ end
 ]]--
 function grid.height(g)
     return #g
+end
+
+--[[
+    Returns the coordinates of the first cell
+    that contains the matching element.
+    Returns nil if not found.
+]]--
+function grid.find(g, target)
+    for y=1, grid.height(g) do
+        for x=1, grid.width(g, y) do
+            if g[y][x] == target then
+                return x, y
+            end
+        end
+    end
+    return nil
 end
 
 return grid
