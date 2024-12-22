@@ -37,15 +37,48 @@ function list.string_list(str)
 end
 
 --[[
-    Returns index of first target match in array
+    Returns index of first target match in array.
+    If equals is supplied, will compare using it.
 ]]--
-function list.array_index(arr, target)
-    for i, v in ipairs(arr) do
-        if target == v then
-            return i
+function list.array_index(arr, target, equals)
+    if equals == nil then
+        for i, v in ipairs(arr) do
+            if target == v then
+                return i
+            end
+        end
+    else
+        for i, v in ipairs(arr) do
+            if equals(target, v) then
+                return i
+            end
         end
     end
     return -1
+end
+
+--[[
+    Returns the set of elements that are true for the supplied filter function.
+]]--
+function list.filter(ls, f)
+    local result = {}
+    for _, v in ipairs(ls) do
+        if f(v) then
+            result[#result + 1] = v
+        end
+    end
+    return result
+end
+
+--[[
+    Returns the set of elements, with f applied to each value.
+]]--
+function list.map(ls, f)
+    local result = {}
+    for _, v in ipairs(ls) do
+        result[#result + 1] = f(v)
+    end
+    return result
 end
 
 return list

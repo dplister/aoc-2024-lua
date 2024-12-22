@@ -54,4 +54,92 @@ function test_array_index_not_found()
     luaunit.assertEquals(list.array_index({ 1, 3 }, 2), -1)
 end
 
+function test_array_index_equals_found()
+    local input_list = {
+        { x=1, t="a" },
+        { x=3, t="c" },
+        { x=2, t="b" },
+        { x=1, t="d" }
+    }
+    -- full match
+    luaunit.assertEquals(list.array_index(input_list,
+        { x=3, t="c" },
+        function (a, b) 
+            return a.x == b.x and a.t == b.t
+        end), 2)
+    -- partial match, first match
+    luaunit.assertEquals(list.array_index(input_list,
+        { x=1 },
+        function (a, b)
+            return a.x == b.x
+        end), 1)
+end
+
+function test_array_index_equals_not_found()
+    local input_list = {
+        { x=1, t="a" },
+        { x=3, t="c" },
+        { x=2, t="b" },
+        { x=1, t="d" }
+    }
+    -- full match
+    luaunit.assertEquals(list.array_index(input_list,
+        { x=4, t="c" },
+        function (a, b) 
+            return a.x == b.x and a.t == b.t
+        end), -1)
+    -- partial match
+    luaunit.assertEquals(list.array_index(input_list,
+        { x=4 },
+        function (a, b)
+            return a.x == b.x
+        end), -1)
+end
+
+function test_filter()
+    local elements = { 1, 2, 3, 4, 5 }
+    luaunit.assertEquals(list.filter(elements, function (a) return a end), elements) -- identity
+    luaunit.assertEquals(list.filter(elements, function (a) return a > 3 end), { 4, 5 })
+end
+
+function test_filter_no_matches()
+    local elements = { 1, 2, 3, 4, 5 }
+    luaunit.assertEquals(list.filter(elements, function (a) return a > 10 end), {})
+end
+
+function test_filter_no_f_param()
+    local elements = { 1, 2, 3, 4, 5 }
+    luaunit.assertEquals(list.filter(elements, function () return false end), {})
+end
+
+function test_filter_scoped()
+    local elements = { 1, 2, 3, 4, 5 }
+    local n = 0
+    luaunit.assertEquals(list.filter(elements, function () 
+        n = n + 1
+        return n > 2
+    end), { 3, 4, 5 })
+end
+
+function test_filter_no_elements()
+    local elements = {}
+    luaunit.assertEquals(list.filter(elements, function (a) return a > 10 end), {})
+end
+
+function test_map()
+    local elements = { 1, 2, 3, 4, 5 }
+    luaunit.assertEquals(list.map(elements, function (a) return a end), elements) -- identity
+    luaunit.assertEquals(list.map(elements, function (a) return a + 1 end), { 2, 3, 4, 5, 6 })
+end
+
+function test_map_no_f_param()
+    local elements = { 1, 2, 3, 4, 5 }
+    luaunit.assertEquals(list.map(elements, function () return 1 end), { 1, 1, 1, 1, 1 })
+end
+
+function test_map_no_elements()
+    local elements = { }
+    luaunit.assertEquals(list.map(elements, function (a) return a + 1 end), { })
+end
+
 os.exit(luaunit.LuaUnit.run())

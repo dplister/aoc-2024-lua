@@ -68,7 +68,8 @@ end
 function grid.path(g, px, py, stepx, stepy, terminate)
     local result = {}
     while grid.in_bounds(g, px, py)
-        and (n == nil or #result < n) do
+        and (terminate == nil 
+            or not terminate(px, py, g[py][px])) do
         result[#result + 1] = { x=px, y=py }
         px = px + stepx
         py = py + stepy
