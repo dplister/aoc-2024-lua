@@ -142,4 +142,23 @@ function test_map_no_elements()
     luaunit.assertEquals(list.map(elements, function (a) return a + 1 end), { })
 end
 
+function test_string_numbers()
+    luaunit.assertEquals(list.string_numbers("1 2 3"), {1, 2, 3})
+    luaunit.assertEquals(list.string_numbers("1: 2, 3"), {1, 2, 3})
+    luaunit.assertEquals(list.string_numbers("1:2,3!"), {1, 2, 3})
+end
+
+function test_string_numbers_empty()
+    luaunit.assertEquals(list.string_numbers(""), {})
+end
+
+function test_rest()
+    luaunit.assertEquals(list.rest({1, 2, 3}), {2, 3})
+    luaunit.assertEquals(list.rest({1}), {})
+end
+
+function test_rest_empty()
+    luaunit.assertEquals(list.rest({}), {})
+end
+
 os.exit(luaunit.LuaUnit.run())

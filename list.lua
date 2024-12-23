@@ -81,4 +81,26 @@ function list.map(ls, f)
     return result
 end
 
+--[[
+    Converts a string to a list of numbers.
+]]--
+function list.string_numbers(line)
+	local matches = {}
+	for m in string.gmatch(line, "%d+") do
+		matches[#matches + 1] = tonumber(m)
+	end
+    return matches
+end
+
+--[[
+    Returns a new copy of the list, except the first element.
+]]--
+function list.rest(ls)
+    local result = {}
+    for i=2,#ls do
+        result[#result + 1] = ls[i]
+    end
+    return result
+end
+
 return list
