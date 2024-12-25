@@ -9,4 +9,8 @@ function mathext.round(v, bracket)
 	return math.floor(v/bracket + mathext.sign(v) * 0.5) * bracket
 end
 
+function mathext.concat(a, b)
+    return tonumber (a .. b)
+end
+
 return mathext
