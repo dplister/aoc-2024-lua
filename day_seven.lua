@@ -18,7 +18,9 @@ function mult(a, b)
     return a * b
 end
 
-local concat = mathext.concat
+function concat(a, b)
+    return mathext.concat(a, b)
+end
 
 function calculate(expected, nums, allowConcat)
     local operands = {}
@@ -85,11 +87,11 @@ function part_b(lines)
         local nums = list.string_numbers(ln)
         local result = calculate(nums[1], list.rest(nums), true)
         if result ~= nil then
-            print(nums[1])
+            print(string.format("%.f", nums[1]))
             count = count + nums[1]
         end
     end
     return count
 end
 
-print(part_b(filehelper.read_lines(arg[1])))
+print(string.format("%.f", part_b(filehelper.read_lines(arg[1]))))
