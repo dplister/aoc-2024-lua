@@ -117,4 +117,36 @@ function grid.find(g, target)
     return nil
 end
 
+--[[
+    Finds all unique elements in grid
+]]--
+function grid.unique_elements(g)
+    local ls = {}
+    for y=1, grid.height(g) do
+        for x=1, grid.width(g, y) do
+            ls[g[y][x]] = 1
+        end
+    end
+    local elements = {}
+    for k, _ in pairs(ls) do
+        elements[#elements + 1] = k
+    end
+    return elements
+end
+
+--[[
+    Finds all matching elements in grid
+]]--
+function grid.matching_elements(g, matcher)
+    local ls = {}
+    for y=1, grid.height(g) do
+        for x=1, grid.width(g, y) do
+            if matcher(x, y, g[y][x]) then
+                ls[#ls + 1] = { x=x, y=y, c=g[y][x] }
+            end
+        end
+    end
+    return ls
+end
+
 return grid

@@ -52,4 +52,26 @@ function test_in_bounds()
     end
 end
 
+function test_unique_elements()
+    local g = grid.create({"1..", ".a.", "..a" })
+    local result = grid.unique_elements(g)
+    table.sort(result)
+    luaunit.assertEquals(result, { ".", "1", "a" })
+end
+
+function test_matching_elements()
+    local g = grid.create({ "1xx", "xxA", "xx9", "xBx", "88x" })
+    local isnum = function (x, y, c)
+        local n = tonumber(c)
+        print(n)
+        return (n ~= nil)
+    end
+    local result = grid.matching_elements(g, isnum)
+    luaunit.assertEquals(result, {
+        { x=1, y=1, c="1"}, 
+        { x=3, y=3, c="9"}, 
+        { x=1, y=5, c="8"},
+        { x=2, y=5, c="8" }})
+end
+
 os.exit(luaunit.LuaUnit.run())
