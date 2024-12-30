@@ -103,4 +103,21 @@ function list.rest(ls)
     return result
 end
 
+--[[
+    Returns set of items except for those present in elements
+]]--
+function list.except(ls, elements)
+    local result = {}
+    local items = {}
+    for _, v in ipairs(elements) do
+        items[v] = 1
+    end
+    for _, v in ipairs(ls) do
+        if items[v] == nil then
+            result[#result + 1] = v
+        end
+    end
+    return result
+end
+
 return list

@@ -161,4 +161,14 @@ function test_rest_empty()
     luaunit.assertEquals(list.rest({}), {})
 end
 
+function test_except()
+    luaunit.assertEquals(list.except({1, 2, 3, 4, 5}, {3}), {1, 2, 4, 5})
+    luaunit.assertEquals(list.except({1, 2, 3}, {1, 3}), {2})
+end
+
+function test_except_empty()
+    luaunit.assertEquals(list.except({1, 2, 3}, {}), {1, 2, 3})
+    luaunit.assertEquals(list.except({}, {1, 2, 3}), {})
+end
+
 os.exit(luaunit.LuaUnit.run())
