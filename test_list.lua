@@ -166,9 +166,56 @@ function test_except()
     luaunit.assertEquals(list.except({1, 2, 3}, {1, 3}), {2})
 end
 
+function test_except_complex()
+    luaunit.assertEquals(list.except(
+    {
+        { x=1, y=2 },
+        { x=1, y=3 },
+        { x=1, y=2 },
+        { x=1, y=3 },
+        { x=5, y=3 }
+    },
+    {
+        { x=1, y=2 }
+    },
+    function(a, b) return a.x == b.x and a.y == b.y end),
+    {
+        { x=1, y=3 },
+        { x=1, y=3 },
+        { x=5, y=3 }
+    })
+end
+
 function test_except_empty()
     luaunit.assertEquals(list.except({1, 2, 3}, {}), {1, 2, 3})
     luaunit.assertEquals(list.except({}, {1, 2, 3}), {})
+end
+
+function test_distinct()
+    luaunit.assertEquals(list.distinct({1, 2, 3}), {1, 2, 3})
+    luaunit.assertEquals(list.distinct({1, 2, 3, 2, 3, 1}), {1, 2, 3})
+    luaunit.assertEquals(list.distinct({3, 3, 2, 1, 1, 2}), {3, 2, 1})
+end
+
+function test_distinct_complex()
+    luaunit.assertEquals(list.distinct(
+    {
+        { x=1, y=2 },
+        { x=1, y=3 },
+        { x=1, y=2 },
+        { x=1, y=3 },
+        { x=5, y=3 }
+    },
+    function(a, b) return a.x == b.x and a.y == b.y end), 
+    {
+        { x=1, y=2 },
+        { x=1, y=3 },
+        { x=5, y=3 }
+    })
+end
+
+function test_distinct_empty()
+    luaunit.assertEquals(list.distinct({}), {})
 end
 
 os.exit(luaunit.LuaUnit.run())

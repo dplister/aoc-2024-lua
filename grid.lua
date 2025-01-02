@@ -149,4 +149,11 @@ function grid.matching_elements(g, matcher)
     return ls
 end
 
+--[[
+    Retrieves the distance between two points
+]]--
+function grid.distance(ax, ay, bx, by)
+    return (bx - ax), (by - ay)
+end
+
 return grid

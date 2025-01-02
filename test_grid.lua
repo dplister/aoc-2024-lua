@@ -63,7 +63,6 @@ function test_matching_elements()
     local g = grid.create({ "1xx", "xxA", "xx9", "xBx", "88x" })
     local isnum = function (x, y, c)
         local n = tonumber(c)
-        print(n)
         return (n ~= nil)
     end
     local result = grid.matching_elements(g, isnum)
@@ -72,6 +71,23 @@ function test_matching_elements()
         { x=3, y=3, c="9"}, 
         { x=1, y=5, c="8"},
         { x=2, y=5, c="8" }})
+end
+
+function test_distance()
+    local test_table = {
+        -- simple positive gap
+        { ax = 1, ay = 1, bx = 2, by = 2, ex = 1, ey = 1 },
+        -- simple negative gap
+        { ax = 9, ay = 9, bx = 2, by = 2, ex = -7, ey = -7 },
+        -- mixed (pos, neg) gap
+        { ax = 9, ay = 1, bx = 2, by = 3, ex = -7, ey = 2 },
+        -- same values
+        { ax = 9, ay = 9, bx = 9, by = 9, ex = 0, ey = 0 },
+    }
+    for _, v in ipairs(test_table) do
+        local rx, ry = grid.distance(v.ax, v.ay, v.bx, v.by)
+        luaunit.assertEquals({ rx, ry }, { v.ex, v.ey })
+    end
 end
 
 os.exit(luaunit.LuaUnit.run())

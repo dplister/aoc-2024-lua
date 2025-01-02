@@ -104,18 +104,45 @@ function list.rest(ls)
 end
 
 --[[
-    Returns set of items except for those present in elements
+    Returns set of items except for those present in elements.
+    Optional compare function for element comparison, otherwise == used.
+    Uses linear search to enable table comparison.
 ]]--
-function list.except(ls, elements)
-    local result = {}
-    local items = {}
-    for _, v in ipairs(elements) do
-        items[v] = 1
+function list.except(ls, elements, compare)
+    if compare == nil then
+        compare = function (a, b) return a == b end
     end
-    for _, v in ipairs(ls) do
-        if items[v] == nil then
-            result[#result + 1] = v
+    local result = {}
+    for i = 1, #ls do
+        for j = 1, #elements do
+            if compare(ls[i], elements[j]) then
+                goto except_found
+            end
         end
+        result[#result + 1] = ls[i]
+        ::except_found::
+    end
+    return result
+end
+
+--[[ 
+    Returns the set of elements that are distinct in a list.
+    Optional compare function for element comparison, otherwise == used.
+    Uses linear search to enable table comparison.
+]]--
+function list.distinct(ls, compare)
+    if compare == nil then
+        compare = function (a, b) return a == b end
+    end
+    local result = {}
+    for i = 1, #ls do
+        for j = 1, #result do
+            if compare(ls[i], result[j]) then
+                goto match_added
+            end
+        end
+        result[#result + 1] = ls[i]
+        ::match_added::
     end
     return result
 end
