@@ -218,4 +218,19 @@ function test_distinct_empty()
     luaunit.assertEquals(list.distinct({}), {})
 end
 
+function test_append()
+	-- ordering test
+	luaunit.assertEquals(list.append({ 1, 2, 3 }, { 4, 5 }), {1, 2, 3, 4, 5 })
+	-- destructive test
+	local initial = { 1, 2, 3 }
+	local expected = { 1, 2, 3, 4, 5 }
+	luaunit.assertEquals(list.append(initial, {4, 5}), expected)
+	luaunit.assertEquals(initial, expected)
+end
+
+function test_append_empty()
+	luaunit.assertEquals(list.append({1,2,3}, {}), {1,2,3})	
+	luaunit.assertEquals(list.append({}, {4, 5}), {4,5})
+end
+
 os.exit(luaunit.LuaUnit.run())

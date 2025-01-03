@@ -147,4 +147,15 @@ function list.distinct(ls, compare)
     return result
 end
 
+--[[
+	Appends elements to end of ls.
+	Affects supplied ls.
+]]--
+function list.append(ls, elements)
+	for _, v in ipairs(elements) do
+		ls[#ls + 1] = v	
+	end
+	return ls
+end
+
 return list
