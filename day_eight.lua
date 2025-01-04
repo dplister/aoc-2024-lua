@@ -46,6 +46,7 @@ end
 function part_a(lines)
     local g = grid.create(lines)
     local antennas = collect_antennas(g)
+    local all_nodes = {}
 	-- iterate through each antenna set
 	for _, v in ipairs(antennas) do
 		print("--- Antenna Set For: " .. v[1].c .. " ---")
@@ -53,13 +54,22 @@ function part_a(lines)
 			print("x: " .. c.x .. " y: " .. c.y)
 		end
 		local nodes = antinode_set(v)
+        local in_nodes = {}
 		-- remove nodes outside of grid
+        for _, n in ipairs(nodes) do
+            if grid.in_bounds(g, n.x, n.y) then
+                in_nodes[#in_nodes + 1] = n
+            end
+        end
 		print("--- Antinodes ---")
-		for _, c in ipairs(nodes) do
+		for _, c in ipairs(in_nodes) do
 			print("x: " .. c.x .. " y: " .. c.y)
 		end
+        all_nodes = list.append(all_nodes, in_nodes)
 	end
-	return antennas
+    all_nodes = list.distinct(all_nodes,
+        function (a, b) return a.x == b.x and a.y == b.y end)
+	return all_nodes
 end
 
 --[[
@@ -78,4 +88,4 @@ function antinodes(a, b)
     return nodes 
 end
 
-print(part_a(filehelper.read_lines(arg[1])))
+print(#part_a(filehelper.read_lines(arg[1])))
