@@ -43,6 +43,21 @@ function antinode_set(antennas)
 	return results
 end
 
+function antinode_path_set(g, antennas)
+	local results = {}
+	-- combine each antenna with every other antenna
+	for i=1, #antennas do
+		for j=i+1, #antennas do
+			local nodes = antinode_expand(g, antennas[i], antennas[j])
+			-- append nodes
+			list.append(results, nodes)
+		end
+	end
+    results = list.distinct(results,
+        function (a, b) return a.x == b.x and a.y == b.y end)
+	return results
+end
+
 function part_a(lines)
     local g = grid.create(lines)
     local antennas = collect_antennas(g)
@@ -72,6 +87,28 @@ function part_a(lines)
 	return all_nodes
 end
 
+function part_b(lines)
+    local g = grid.create(lines)
+    local antennas = collect_antennas(g)
+    local all_nodes = {}
+	-- iterate through each antenna set
+	for _, v in ipairs(antennas) do
+		print("--- Antenna Set For: " .. v[1].c .. " ---")
+		for _, c in ipairs(v) do
+			print("x: " .. c.x .. " y: " .. c.y)
+		end
+		local nodes = antinode_path_set(g, v)
+		print("--- Antinodes ---")
+		for _, c in ipairs(nodes) do
+			print("x: " .. c.x .. " y: " .. c.y)
+		end
+        all_nodes = list.append(all_nodes, nodes)
+	end
+    all_nodes = list.distinct(all_nodes,
+        function (a, b) return a.x == b.x and a.y == b.y end)
+	return all_nodes
+end
+
 --[[
     Calculates the distance between two points and gathers the set of antinodes
 ]]--
@@ -88,4 +125,19 @@ function antinodes(a, b)
     return nodes 
 end
 
-print(#part_a(filehelper.read_lines(arg[1])))
+--[[
+	Draws a line of antinodes
+]]--
+function antinode_expand(g, a, b)
+	local dx, dy = grid.distance(a.x, a.y, b.x, b.y)
+	local rx, ry = (dx * -1), (dy * -1)
+	local pl = grid.path(g, a.x, a.y, dx, dy)
+	local pr = grid.path(g, a.x, a.y, rx, ry)
+	pl = list.append(pl, pr)
+	return list.distinct(pl, 
+		function (c, d)
+			return c.x == d.x and c.y == d.y
+		end)
+end
+
+print(#part_b(filehelper.read_lines(arg[1])))
