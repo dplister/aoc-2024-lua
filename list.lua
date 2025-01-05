@@ -152,6 +152,9 @@ end
 	Affects supplied ls.
 ]]--
 function list.append(ls, elements)
+    if ls == nil then
+        ls = {}
+    end
 	for _, v in ipairs(elements) do
 		ls[#ls + 1] = v	
 	end

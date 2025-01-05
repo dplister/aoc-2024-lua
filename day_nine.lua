@@ -59,6 +59,27 @@ function checksum(blocks)
     return result
 end
 
+--[[
+    Creates a map of empty blocks
+]]--
+function find_empty_blocks(blocks, free_detected_f)
+    local index = 1
+    while index < #blocks do
+        if blocks[index] == "." then
+            local starting = index
+            -- collect until we have reached end of range (or end of blocks, which is nil)
+            while blocks[index] == "." do
+                index = index + 1
+            end
+            local distance = index - starting
+            free_detected_f(starting, distance)
+        else
+            -- continue search
+            index = index + 1
+        end
+    end
+end
+
 function part_a(line)
     local ns = parse(line)
     local bs = blocks(ns)
@@ -67,5 +88,12 @@ function part_a(line)
     return checksum(bs)
 end
 
---print(part_a("12345"))
-print(part_a(filehelper.read_all(arg[1])))
+function part_b(line)
+    local ns = parse(line)
+    local bs = blocks(ns)
+    print(table.concat(bs, ""))
+    return 0
+end
+
+print(part_b("12345"))
+--print(part_b(filehelper.read_all(arg[1])))

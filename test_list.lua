@@ -233,4 +233,12 @@ function test_append_empty()
 	luaunit.assertEquals(list.append({}, {4, 5}), {4,5})
 end
 
+function test_append_nil()
+    local initial = nil
+    local expected = { 1, 2, 3 }
+    local updated = list.append(initial, { 1, 2, 3 })
+    luaunit.assertNil(initial, expected)
+    luaunit.assertEquals(updated, expected)
+end
+
 os.exit(luaunit.LuaUnit.run())
