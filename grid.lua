@@ -156,4 +156,19 @@ function grid.distance(ax, ay, bx, by)
     return (bx - ax), (by - ay)
 end
 
+--[[
+    Retrieves the points in the directions supplied from the supplied x,y starting position.
+]]--
+function grid.next_dir(g, x, y, dirs)
+    local pts = {}
+    for _, d in dirs do
+        local wx = x + grid.step_directions[d].x
+        local wy = y + grid.step_directions[d].y
+        if grid.in_bounds(g, wx, wy) then
+            pts[#pts + 1] = { x = wx, y = wy, c = g[y][x] }
+        end
+    end
+    return pts
+end
+
 return grid
