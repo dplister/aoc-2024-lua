@@ -26,12 +26,16 @@ function list.arrays_equal(l1, l2)
 end
 
 --[[
-    Creates a list from a string
+    Creates a list from a string.
+	Optional transformer function to convert each value.
 ]]--
-function list.string_list(str)
+function list.string_list(str, value_transform_f)
     local ls = {}
+	if value_transform_f == nil then
+		value_transform_f = function (v) return v end
+	end
     for i=1, #str do
-        ls[#ls + 1] = string.sub(str, i, i)
+        ls[#ls + 1] = value_transform_f(string.sub(str, i, i))
     end
     return ls
 end

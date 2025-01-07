@@ -21,13 +21,14 @@ grid.step_directions = {
 
 --[[
     Creates a grid from a set of lines of characters.
+	Optional transformation function to convert cell values.
 ]]--
-function grid.create(lines)
+function grid.create(lines, value_transform_f)
     assert(#lines > 0) -- must have a height of at least 1
     assert(#lines[1] > 0) -- must have a width of at least 1
     local g = {}
     for _, line in ipairs(lines) do
-        g[#g + 1] = list.string_list(line)
+        g[#g + 1] = list.string_list(line, value_transform_f)
     end
     return g
 end

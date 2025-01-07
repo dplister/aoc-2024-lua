@@ -40,8 +40,17 @@ function test_string_list()
         "1"
     }
     for _, v in ipairs(tests) do
-        luaunit.assertEquals(v, table.concat(list.string_list(v)))
+        luaunit.assertEquals(table.concat(list.string_list(v)), v)
     end
+end
+
+function test_string_list_empty()
+	luaunit.assertEquals(list.string_list(""), {})
+end
+
+function test_string_list_transform()
+	local t = function (v) return tonumber(v) end
+	luaunit.assertEquals(list.string_list("1234", t), { 1, 2, 3, 4 })
 end
 
 function test_array_index_found()
