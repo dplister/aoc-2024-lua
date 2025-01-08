@@ -35,7 +35,7 @@ function list.string_list(str, value_transform_f)
 		value_transform_f = function (v) return v end
 	end
     for i=1, #str do
-        ls[#ls + 1] = value_transform_f(string.sub(str, i, i))
+        ls[i] = value_transform_f(string.sub(str, i, i))
     end
     return ls
 end
@@ -115,6 +115,9 @@ end
 function list.except(ls, elements, compare)
     if compare == nil then
         compare = function (a, b) return a == b end
+    end
+    if elements == nil then
+        elements = {}
     end
     local result = {}
     for i = 1, #ls do

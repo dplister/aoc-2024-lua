@@ -162,11 +162,11 @@ end
 ]]--
 function grid.next_dir(g, x, y, dirs)
     local pts = {}
-    for _, d in dirs do
+    for _, d in ipairs(dirs) do
         local wx = x + grid.step_directions[d].x
         local wy = y + grid.step_directions[d].y
         if grid.in_bounds(g, wx, wy) then
-            pts[#pts + 1] = { x = wx, y = wy, c = g[y][x] }
+            pts[#pts + 1] = { x = wx, y = wy, c = g[wy][wx] }
         end
     end
     return pts

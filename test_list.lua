@@ -53,6 +53,11 @@ function test_string_list_transform()
 	luaunit.assertEquals(list.string_list("1234", t), { 1, 2, 3, 4 })
 end
 
+function test_string_list_transform_nils()
+	local t = function (v) return tonumber(v) end
+    luaunit.assertEquals(list.string_list("1.34", t), {1, nil, 3, 4})
+end
+
 function test_array_index_found()
     luaunit.assertEquals(list.array_index({ 4, 5, 6 }, 5), 2)
     luaunit.assertEquals(list.array_index({ 4, 5, 6 }, 4), 1)
