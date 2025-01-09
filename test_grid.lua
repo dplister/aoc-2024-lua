@@ -16,6 +16,13 @@ function test_create_number_grid()
 	luaunit.assertEquals(g[1][3], 3)
 end
 
+function test_create_f()
+    local g = grid.create_f(5, 5, function (x, y) return x .. "," .. y end)
+    luaunit.assertEquals(g[5][3], "3,5")
+    luaunit.assertEquals(g[1][2], "2,1")
+    luaunit.assertEquals(g[2][4], "4,2")
+end
+
 function test_output_small()
     local g = grid.create({ "12", "34" })
     local expected = [[12

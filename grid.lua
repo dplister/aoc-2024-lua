@@ -34,6 +34,20 @@ function grid.create(lines, value_transform_f)
 end
 
 --[[
+    Creates a grid of width and height, initialising each cell via setter_f(x, y)
+]]--
+function grid.create_f(width, height, setter_f)
+    local g = {}
+    for y=1,height do
+        g[y] = {}
+        for x=1,width do
+            g[y][x] = setter_f(x, y)
+        end
+    end
+    return g
+end
+
+--[[
     Returns the string representation of the grid.
 ]]--
 function grid.output(g)
