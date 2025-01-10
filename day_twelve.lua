@@ -31,6 +31,7 @@ function print_state(state)
     for _, v in ipairs(state.visited) do
         print("x: " .. v.x .. " y: " .. v.y)
     end
+	print("Total: " .. #state.visited)
     -- border count
     print("Borders: " .. state.borders)
 end
@@ -40,8 +41,19 @@ function part_a(lines)
     -- create a duplicate grid to mark explored
     local explored = grid.create_f(grid.width(g, 1), grid.height(g), 
         function (x, y) return false end)
-    local state = count_region(g, explored, 1, 1, { target = "A" })
-    print_state(state)
+	local total = 0
+	for y=1,grid.height(g) do
+		for x=1,grid.width(g,y) do
+			if not explored[y][x] then
+				local state = count_region(g, explored, x, y, { target = g[y][x] })
+				print_state(state)
+				local cost = state.borders * #state.visited
+				print("Cost: " .. cost)
+				total = total + cost
+			end
+		end
+	end
+	return total
 end
 
 local filename = arg[1]
