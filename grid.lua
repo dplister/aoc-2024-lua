@@ -180,7 +180,7 @@ function grid.next_dir(g, x, y, dirs)
         local wx = x + grid.step_directions[d].x
         local wy = y + grid.step_directions[d].y
         if grid.in_bounds(g, wx, wy) then
-            pts[#pts + 1] = { x = wx, y = wy, c = g[wy][wx] }
+            pts[#pts + 1] = { x = wx, y = wy, c = g[wy][wx], from_dir = d, from_x = x, from_y = y }
         end
     end
     return pts
