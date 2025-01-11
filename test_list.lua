@@ -255,4 +255,25 @@ function test_append_nil()
     luaunit.assertEquals(updated, expected)
 end
 
+function test_fold_seed()
+    -- sum
+    luaunit.assertEquals(list.fold({1, 2, 3},
+        function (total, current) return total + current end,
+        0),
+        6)
+end
+
+-- Handles a missing seed by checking within f
+function test_fold_no_seed()
+    -- max
+    luaunit.assertEquals(list.fold({3, 1, 2},
+        function (running, current) 
+            if running == nil then return current end
+            return running > current
+                and running
+                or current
+        end),
+        3)
+end
+
 os.exit(luaunit.LuaUnit.run())
