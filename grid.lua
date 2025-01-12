@@ -172,16 +172,24 @@ function grid.distance(ax, ay, bx, by)
 end
 
 --[[
-    Retrieves the points in the directions supplied from the supplied x,y starting position.
+	Retrieves the point in the direction supplied starting at origin x,y.
 ]]--
-function grid.next_dir(g, x, y, dirs)
+function grid.next_dir(g, x, y, dir)
+	local wx = x + grid.step_directions[dir].x
+	local wy = y + grid.step_directions[dir].y
+	if grid.in_bounds(g, wx, wy) then
+		return { x = wx, y = wy, c = g[wy][wx], from_dir = dir, from_x = x, from_y = y }
+	end
+	return nil
+end
+
+--[[
+    Retrieves the points in the directions supplied starting at origin x,y.
+]]--
+function grid.next_dirs(g, x, y, dirs)
     local pts = {}
     for _, d in ipairs(dirs) do
-        local wx = x + grid.step_directions[d].x
-        local wy = y + grid.step_directions[d].y
-        if grid.in_bounds(g, wx, wy) then
-            pts[#pts + 1] = { x = wx, y = wy, c = g[wy][wx], from_dir = d, from_x = x, from_y = y }
-        end
+		pts[#pts + 1] = grid.next_dir(g, x, y, d)
     end
     return pts
 end

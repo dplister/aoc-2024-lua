@@ -10,7 +10,7 @@ function explore(g, px, py, c, results, visited)
         return results
     end
     -- fetch the next set of steps
-    local ds = grid.next_dir(g, px, py, { "N", "S", "E", "W" })
+    local ds = grid.next_dirs(g, px, py, { "N", "S", "E", "W" })
     -- remove elements that have already been visited
     local next_c = c + 1
     local cv = visited[next_c]
@@ -31,7 +31,7 @@ function rate(g, px, py, c)
     end
     -- fetch the next set of steps
     local total = 0
-    local ds = grid.next_dir(g, px, py, { "N", "S", "E", "W" })
+    local ds = grid.next_dirs(g, px, py, { "N", "S", "E", "W" })
     for _, d in ipairs(ds) do
         if d.c == c + 1 then
             total = total + rate(g, d.x, d.y, d.c)
