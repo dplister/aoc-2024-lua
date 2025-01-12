@@ -157,6 +157,8 @@ end
 --[[
 	Appends elements to end of ls.
 	Affects supplied ls.
+    If ls was nil, it will be initialised.
+        In case of nil ls, caller will need to remember to bind return value.
 ]]--
 function list.append(ls, elements)
     if ls == nil then
@@ -166,6 +168,21 @@ function list.append(ls, elements)
 		ls[#ls + 1] = v	
 	end
 	return ls
+end
+
+--[[
+    Executes a function across a list carrying a running value.
+    f of signature f(running_value, current).
+    (Optional) seed value for initial total.
+        If seed omitted, f will need to handle nil for initial running total.
+]]--
+function list.fold(ls, f, seed)
+    if #ls == 0 then return seed end
+    local result = f(seed, ls[1])
+    for i=2,#ls do
+        result = f(result, ls[i])
+    end
+    return result
 end
 
 return list
