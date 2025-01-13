@@ -78,14 +78,14 @@ end
 --[[
     Returns the set of cells, starting at px, py and continuing in a 
     step px, py until terminate returns true
-    If terminate is not supplied, step will continue until bouundary.
+    If terminate is not supplied, step will continue until boundary.
 ]]--
 function grid.path(g, px, py, stepx, stepy, terminate)
     local result = {}
     while grid.in_bounds(g, px, py)
         and (terminate == nil 
             or not terminate(px, py, g[py][px])) do
-        result[#result + 1] = { x=px, y=py }
+        result[#result + 1] = { x=px, y=py, c=g[py][px] }
         px = px + stepx
         py = py + stepy
     end
